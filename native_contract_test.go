@@ -25,6 +25,7 @@ import (
 
 func TestOntId(t *testing.T) {
 	Init()
+	// register onid
 	testIdentity, err := testWallet.NewDefaultSettingIdentity(testPasswd)
 	if err != nil {
 		t.Errorf("TestOntId NewDefaultSettingIdentity error:%s", err)
@@ -36,6 +37,7 @@ func TestOntId(t *testing.T) {
 		return
 	}
 	testOntSdk.WaitForGenerateBlock(30 * time.Second)
+	// add attribute by public key index
 	attributes := []*DDOAttribute{
 		&DDOAttribute{
 			Key:       []byte("1"),
@@ -49,6 +51,7 @@ func TestOntId(t *testing.T) {
 		return
 	}
 	testOntSdk.WaitForGenerateBlock(30 * time.Second)
+	// add attribute key by public key index
 	attribute, err := testOntSdk.Native.OntId.GetAttributeByKey(testIdentity.ID, "1")
 	if err != nil {
 		t.Errorf("TestOntId GetAttributeByKey error:%s", err)
@@ -61,5 +64,8 @@ func TestOntId(t *testing.T) {
 		return
 	}
 	fmt.Printf("TestOntId GetDocumentJson:%+v\n", string(document))
+	// revoke ontid
+	txHash, _ := testOntSdk.Native.OntId.RevokeID(testGasPrice, testGasLimit, testDefAcc, testIdentity.ID, 1, testDefAcc)
+	fmt.Printf("TestOntId RevokeID: %+v\n", txHash.ToHexString())
 	return
 }
