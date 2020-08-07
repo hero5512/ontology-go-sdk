@@ -64,6 +64,7 @@ func TestOntId(t *testing.T) {
 		return
 	}
 	fmt.Printf("TestOntId GetDocumentJson:%+v\n", string(document))
+	testOntSdk.WaitForGenerateBlock(30 * time.Second)
 	// revoke ontid
 	txHash, _ := testOntSdk.Native.OntId.RevokeID(testGasPrice, testGasLimit, testDefAcc, testIdentity.ID, 1, testDefAcc)
 	fmt.Printf("TestOntId RevokeID: %+v\n", txHash.ToHexString())
